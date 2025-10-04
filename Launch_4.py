@@ -23,13 +23,18 @@ async def moveToPosition0():    # has to be async for awaitables
     return
 
 async def runMission9():
-    await moveForInches (29)
+    await moveForInches (28.75)
     await turnForDegrees (50)
     await moveForInches(-0.5)
-    await motor.run_for_degrees(port.F, -67, 1000)
+    await motor.run_to_absolute_position(port.F, 278, 1000)
+    await turnForDegrees (-58, 100)
+    await moveForInches (1.8)
+    await turnForDegrees (-50,300)
+    await moveForInches (-3)
     await turnForDegrees (-45)
-
-
+    await moveForInches (13)
+    await turnForDegrees (45)
+    await moveForInches (-16)
 
 async def main():
     motor_pair.pair(motor_pair.PAIR_1, port.D, port.C)
