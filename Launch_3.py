@@ -3,17 +3,35 @@ import motor
 from hub import port
 import runloop
 
-async def moveToPosition0():    # has to be async to use await which is neeeded for running motors cuz those are a kind of Class type called "awaitables"
-    motor_pair.pair(motor_pair.PAIR_1, port.A, port.B)
-    await motor_pair.move_tank_for_time(motor_pair.PAIR_1, 1000, 1000, 1000)        # moves straight for 1 second
-    await motor_pair.move_tank_for_time(motor_pair.PAIR_1, 2000, -1000, 1000)       # does a tank turn to the right for 1 second'
+async def moveForInches(inches, speed= 500):
+    degrees = inches * 360 // 11.5
+    degrees = round(degrees)
+    # motor_pair.pair(motor_pair.PAIR_1, port.D, port.C)
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, degrees, speed, speed)
+    motor_pair.stop(motor_pair.PAIR_1)
+    # motor_pair.unpair(motor_pair.PAIR_1)
+
+async def turnForDegrees(degrees, speed= 500):
+    # motor_pair.pair(motor_pair.PAIR_1, port.D, port.C)
+    speedLeft = -1 * speed
+    speedRight = speed
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, degrees, speedRight, speedLeft)
+    motor_pair.stop(motor_pair.PAIR_1)
+    await runloop.sleep_ms(250)
 
 async def runMission5():
-    motor.run_for_degrees(port.C, 90, 1000)
-
+    await moveForInches(-28)
+    for i in range(3):
+        await motor.run_to_absolute_position(port.B, 0, 1500)
+        await motor.run_for_degrees(port.B, 200, 1750)
+        await motor.run_for_degrees(port.B, -50, 1750)
+        await motor.run_for_degrees(port.B, 50, 1750)
+    await motor.run_to_absolute_position(port.B, 0, 10000)
+    await moveForInches(28)
 
 async def main():
-    await moveToPosition0()
+    motor_pair.pair(motor_pair.PAIR_1, port.D, port.C)
     await runMission5()
+
 
 runloop.run(main())
