@@ -20,24 +20,15 @@ async def turnForDegrees(degrees, speed= 500):
 
 async def moveToPosition0():    # has to be async to use await which is neeeded for running motors cuz those are a kind of Class type called "awaitables"
     await motor.run_to_absolute_position(port.F,235,1000)
-    await moveForInches(28, 400)            #mission 2
-    await turnForDegrees(-53, 400)
-    await moveForInches(7, 400)     
-    await moveForInches(-9, 400)
-    await motor.run_to_absolute_position(port.F,280,1000)
-    await turnForDegrees(-120, 250)     #mission 1
+    await moveForInches(28, 500)            #mission 2
+    await turnForDegrees(-50, 400)
+    await moveForInches(7, 500)
+    await moveForInches(-9, 500)
+    await motor.run_to_absolute_position(port.F,244,1000)
+    await turnForDegrees(-120, 250)    #mission 1
     await turnForDegrees(125, 250)
     await turnForDegrees(47, 250)    #Transition between mission 1 and 3
     await moveForInches(-4, 400)
-    await turnForDegrees(52, 400)
-    await moveForInches(8, 400)         #Mission 3
-    await turnForDegrees(76, 400)
-    await moveForInches(12, 400)
-    await turnForDegrees(-116, 300)
-    await motor.run_to_absolute_position(port.F, 225, 1000)
-    await moveForInches(-0.8)
-    await motor.run_to_absolute_position(port.F,360, 200)
-    
     #Option 2: Stabilize First
     #await turnForDegrees(165)
     #await motor.run_to_absolute_position(port.F, 0, 1000)
@@ -50,7 +41,7 @@ async def moveToPosition0():    # has to be async to use await which is neeeded 
     #await turnForDegrees(30)
     #await moveForInches(6)
     #await turnForDegrees(-96)
-    
+
 
 async def main():
     motor_pair.pair(motor_pair.PAIR_1, port.D, port.C)
