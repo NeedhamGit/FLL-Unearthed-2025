@@ -1,4 +1,6 @@
 import motor_pair
+import color_sensor
+import color
 import motor
 from hub import port
 import runloop
@@ -6,49 +8,53 @@ import runloop
 async def moveForInches(inches, speed= 500):
     degrees = inches * 360 // 11.5
     degrees = round(degrees)
-    # motor_pair.pair(motor_pair.PAIR_1, port.D, port.C)
     await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, degrees, speed, speed)
     motor_pair.stop(motor_pair.PAIR_1)
-    # motor_pair.unpair(motor_pair.PAIR_1)
 
 async def turnForDegrees(degrees, speed= 500):
-    # motor_pair.pair(motor_pair.PAIR_1, port.D, port.C)
     speedLeft = -1 * speed
     speedRight = speed
     await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, degrees, speedRight, speedLeft)
     motor_pair.stop(motor_pair.PAIR_1)
     await runloop.sleep_ms(250)
-    # motor_pair.unpair(motor_pair.PAIR_1)
 
-async def moveToPosition1():    # has to be async to use await which is neeeded for running motors cuz those are a kind of Class type called "awaitables"
-    await motor.run_to_absolute_position(port.F, 234, 500)
-    await moveForInches(30)
-    await turnForDegrees(-50)
-    await moveForInches(4)
-    await moveForInches(-7)
-    await turnForDegrees(-30)
-    await motor.run_for_degrees(port.F, 50, 1000)
-    await moveForInches(1)
-    await turnForDegrees(-70)
-    await turnForDegrees(80)
-    await moveForInches(-3)
-    await turnForDegrees(45)
-    await motor.run_for_degrees(port.F, -10, 1000)
-    await moveForInches(7)
-    await motor.run_for_degrees(port.F, 60, 1100)
-    await moveForInches(-10)
-    await turnForDegrees(70)
-    await moveForInches(-35)
+async def moveToPosition0():    # has to be async to use await which is neeeded for running motors cuz those are a kind of Class type called "awaitables"
+    await motor.run_to_absolute_position(port.F,235,1000)
+    await moveForInches(28, 400)            #mission 2
+    await turnForDegrees(-53, 400)
+    await moveForInches(7, 400)     
+    await moveForInches(-9, 400)
+    await motor.run_to_absolute_position(port.F,280,1000)
+    await turnForDegrees(-120, 250)     #mission 1
+    await turnForDegrees(125, 250)
+    await turnForDegrees(47, 250)    #Transition between mission 1 and 3
+    await moveForInches(-4, 400)
+    await turnForDegrees(52, 400)
+    await moveForInches(8, 400)         #Mission 3
+    await turnForDegrees(76, 400)
+    await moveForInches(12, 400)
+    await turnForDegrees(-116, 300)
+    await motor.run_to_absolute_position(port.F, 225, 1000)
+    await moveForInches(-0.8)
+    await motor.run_to_absolute_position(port.F,360, 200)
+    
+    #Option 2: Stabilize First
+    #await turnForDegrees(165)
+    #await motor.run_to_absolute_position(port.F, 0, 1000)
+    #await turnForDegrees(-80)
+    #await moveForInches(20)
 
-async def runMission1():
-    motor.run_for_degrees(port.C, 90, 1000)
-
+    #Option 1: Direct
+    #await turnForDegrees(165)
+    #await moveForInches(10)
+    #await turnForDegrees(30)
+    #await moveForInches(6)
+    #await turnForDegrees(-96)
+    
 
 async def main():
-    motor.run_to_absolute_position(port.F, 0, 500)
-    motor.run_to_absolute_position(port.B, 30, 500)
     motor_pair.pair(motor_pair.PAIR_1, port.D, port.C)
-    await moveToPosition1()
-    #await runMission1()
+    motor.run_to_absolute_position(port.F, 0, 1000)
+    await moveToPosition0()
 
 runloop.run(main())
