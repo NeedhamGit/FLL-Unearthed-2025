@@ -1,38 +1,149 @@
+/* Reset some default styles */
+body {
+margin: 0;
+padding: 0;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+background-color: #f5f7fa;
+color: #333;
+}
+
+/* Main app wrapper */
 .App {
-  text-align: center;
+text-align: center;
+padding: 40px 20px;
+max-width: 1200px;
+margin: 0 auto;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Main title */
+.title {
+font-size: 3rem;
+font-weight: bold;
+color: #1a237e;
+margin-bottom: 30px;
+text-shadow: 1px 1px 2px #ccc;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* About us section */
+.about-us {
+display: flex;
+flex-direction: row;
+align-items: center;
+justify-content: space-between;
+gap: 30px;
+background-color: #e8eaf6;
+padding: 30px;
+border-radius: 12px;
+margin-bottom: 40px;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* About us section */
+.transportation_problem {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: space-between;
+gap: 30px;
+background-color: #ffdab5;
+padding: 30px;
+border-radius: 12px;
+margin-bottom: 40px;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.about-us p {
+flex: 2;
+font-size: 1.1rem;
+line-height: 1.6;
+text-align: left;
+}
+
+.about-us img {
+flex: 1;
+max-width: 100%;
+height: auto;
+border: 4px solid #3949ab;
+border-radius: 10px;
+}
+
+/* Demo video styling */
+.demo-video {
+margin: 40px 0;
+background-color: #ede7f6;
+padding: 30px;
+border-radius: 12px;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.demo-section{
+display: flex;
+flex-direction: row;
+}
+
+.demo-section-content {
+  flex: 1;
+  text-align: left;
+  padding-right: 20px;
+}
+
+.demo-section-video {
+  flex: 1;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
 }
 
-.App-link {
-  color: #61dafb;
+.demo-section video {
+width: 100%;
+max-width: 800px;
+border-radius: 10px;
+border: 2px solid #5c6bc0;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Funding section */
+.funding {
+background-color: #fce4ec;
+padding: 30px;
+border-radius: 12px;
+text-align: left;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.funding h2 {
+color: #ad1457;
+font-size: 2rem;
+margin-bottom: 15px;
+}
+
+.funding p {
+white-space: pre-line; /* To preserve line breaks in multiline strings */
+font-size: 1.1rem;
+line-height: 1.6;
+}
+
+/* Responsive layout */
+@media (max-width: 768px) {
+.about-us {
+ flex-direction: column;
+ text-align: center;
+}
+
+.about-us p {
+ text-align: center;
+}
+
+.funding {
+ text-align: center;
+}
+ 
+ .demo-section {
+  flex-direction: column;
+ }
+ 
+ .demo-section-content {
+  padding-right: 0;
+  margin-bottom: 20px;
+  text-align: center;
+ }
 }
