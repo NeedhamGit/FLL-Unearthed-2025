@@ -1,19 +1,63 @@
 import motor_pair
+import color_sensor
+import color
 import motor
 from hub import port
 import runloop
 
-async def moveToPosition0():    # has to be async to use await which is neeeded for running motors cuz those are a kind of Class type called "awaitables"
-    motor_pair.pair(motor_pair.PAIR_1, port.A, port.B)
-    await motor_pair.move_tank_for_time(motor_pair.PAIR_1, 1000, 1000, 1000)        # moves straight for 1 second
-    await motor_pair.move_tank_for_time(motor_pair.PAIR_1, 2000, -1000, 1000)    # does a tank turn to the right for 1 second'
+async def moveForInches(inches, speed= 400):
+    degrees = inches * 360 // 11.5
+    degrees = round(degrees)
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, degrees, speed, speed)
+    motor_pair.stop(motor_pair.PAIR_1)
 
-async def runMission10():
-    motor.run_for_degrees(port.C, 90, 1000)
+async def turnForDegrees(degrees, speed= 500):
+    speedLeft = -1 * speed
+    speedRight = speed
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, degrees, speedRight, speedLeft)
+    motor_pair.stop(motor_pair.PAIR_1)
+    await runloop.sleep_ms(250)
+
+async def runMissionShip():
+    await moveForInches(30)
+    await moveForInches (-4)
+    await turnForDegrees (-36)
+    await moveForInches(17)
+    await turnForDegrees(123)
+
+async def runMissionCoral():
+    await moveForInches(17)
+    await turnForDegrees(123)
+    await motor.run_to_absolute_position(port.F, 243, 1000)
+    await moveForInches(3.5, 100)
+    for i in range(5):
+        await turnForDegrees(42)
+        await turnForDegrees(-42)
+    await turnForDegrees(21)
+    await moveForInches(-5)
+    await turnForDegrees(-60)
+
+async def runMissionBucket():
+    await moveForInches(7)
+    await motor.run_to_absolute_position(port.F, 0, 1000)
+    await turnForDegrees(-152)
+    await moveForInches(-0.5)
+    await motor.run_to_absolute_position(port.F, 243, 1000)
+    await moveForInches(-3.5)
+    await motor.run_to_absolute_position(port.F, 0, 1000)
+
+async def runToBlueSide():
+    await moveForInches(2)
+    await turnForDegrees(-100)
+    await moveForInches(-50)
 
 
 async def main():
-    await moveToPosition0()
-    await runMission10()
+    motor_pair.pair(motor_pair.PAIR_1, port.D, port.C)
+    motor.run_to_absolute_position(port.F, 0, 1000)
+    await runMissionShip()
+    await runMissionCoral()
+    await runMissionBucket()
+    await runToBlueSide()
 
 runloop.run(main())
